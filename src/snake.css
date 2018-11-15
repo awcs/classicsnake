@@ -8,10 +8,8 @@ canvas {
   background-color: rgb(184, 235, 103);
 }
 
-.btn {
-  z-index : 2;
-  top : 50%;
-  left : 50%;
-  width: 100px;
-  height: 100px;
+.start-screen {
+  background-color: rgb(184, 235, 103);
+  margin : 0 !important;
+  padding : 0 !important;
 }
