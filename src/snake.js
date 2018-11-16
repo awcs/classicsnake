@@ -1,3 +1,13 @@
+let startGameHandler = document.getElementById('start-game');
+
+startGameHandler.addEventListener('click', function(){
+  document.getElementById('startscreen').className="d-none";
+})
+
+function launchGame(){
+
+document.getElementById('canvas').className = "d-block";
+
 const canvas = document.querySelector('canvas');
 
 canvas.width = window.innerWidth;
@@ -11,3 +21,6 @@ ctx.fillRect(840 , 700, 180, 50);
 ctx.font = "25px Courier new";
 ctx.fillStyle = "white";
 ctx.fillText("Start Game", 845, 730);
+
+}
+

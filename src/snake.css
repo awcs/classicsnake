@@ -12,4 +12,5 @@ canvas {
   background-color: rgb(184, 235, 103);
   margin : 0 !important;
   padding : 0 !important;
+  height: 100vh !important;
 }
