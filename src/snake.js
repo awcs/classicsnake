@@ -1,20 +1,73 @@
+// START GAME BUTTON
 let startGameHandler = document.getElementById('start-game');
 
 startGameHandler.addEventListener('click', function(){
   document.getElementById('startscreen').className="d-none";
 })
 
+
+// START GAME 
 function launchGame(){
 
-document.getElementById('canvas').className = "d-block";
+  let snakeBlock ;
+  let snakeOrientation = 0 ; 
 
-const canvas = document.querySelector('canvas');
+    // MOVES EVENTS
+  document.onkeydown = checkKey;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+  function checkKey(e) {
+    e = e || window.event;
+    if (e.keyCode == '38') {
+      snakeOrientation = 0
+    } else if (e.keyCode == '40') {
+      snakeOrientation = 1
+    } else if (e.keyCode == '37') {
+      snakeOrientation = 2
+    } else if (e.keyCode == '39') {
+      snakeOrientation = 3
+    }
+  }
 
-const ctx = canvas.getContext('2d');
-const image = document.getElementById('source');
+  class snakeBlockAnimation {
+
+    constructor(width,height,color,x,y){
+      this.width = width;
+      this.height = height;
+      this.x = x;
+      this.y = y; 
+      this.numberBlockSnake = [0, 1, 2, 3, 4];
+      this.update = function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for( let i = 0; i< this.numberBlockSnake.length; i++){
+          ctx.fillStyle = color;
+          ctx.fillRect(this.x, this.y+i*25, this.width, this.height);
+        }
+      }
+    }
+  }
+
+  document.getElementById('canvas').className = "d-block";
+  const canvas = document.querySelector('canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  document.body.insertBefore(canvas, document.body.childNodes[0]);
+  snakeBlock = new snakeBlockAnimation(25,25,"red",canvas.width/2, canvas.height/2);
+  
+  setInterval( () => {
+    snakeBlock.update();
+    if(snakeOrientation === 0){
+      snakeBlock.y -= 25; 
+    } else if(snakeOrientation === 1){
+      snakeBlock.y += 25; 
+    } else if(snakeOrientation === 2){
+      snakeBlock.x -= 25;
+    } else if(snakeOrientation === 3){
+      snakeBlock.x += 25;
+    }
+  }, 60);
+
+
 const button = document.getElementById("refresh");
 
 let refresh = function() {
@@ -37,13 +90,13 @@ let refresh = function() {
   ctx.lineWidth = 5;
   ctx.strokeRect(canvas.width/2, canvas.height/2, 25, 25);
 
-  ctx.drawImage(image, canvas.width/2 - 200, canvas.height/2 - 100, 400, 200);
-  ctx.fillRect(840 , 700, 180, 50);
-  ctx.font = "25px Courier new";
-  ctx.fillStyle = "white";
-  ctx.fillText("Start Game", 845, 730);
-  }
   refresh();
   button.addEventListener("click", refresh, false);
+
 }
+
+
+
+
+
 
