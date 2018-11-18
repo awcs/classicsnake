@@ -28,6 +28,7 @@ function launchGame(){
     }
   }
 
+  // SNAKE CLASS 
   class snakeBlockAnimation {
 
     constructor(width,height,color,x,y){
@@ -46,6 +47,7 @@ function launchGame(){
     }
   }
 
+  // CREATE CANVAS + SNAKE
   document.getElementById('canvas').className = "d-block";
   const canvas = document.querySelector('canvas');
   canvas.width = window.innerWidth;
@@ -54,6 +56,7 @@ function launchGame(){
   document.body.insertBefore(canvas, document.body.childNodes[0]);
   snakeBlock = new snakeBlockAnimation(25,25,"red",canvas.width/2, canvas.height/2);
   
+  // MOVEMENTS UPDATE + REFRESH CANVAS
   setInterval( () => {
     snakeBlock.update();
     if(snakeOrientation === 0){
@@ -67,36 +70,24 @@ function launchGame(){
     }
   }, 60);
 
+  //GENERATE FOOD
+  function generateFood() {
 
-const button = document.getElementById("refresh");
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let x = Math.floor(Math.random()*canvas.width - 10);
+    let y = Math.floor(Math.random()*canvas.height - 10);
+    
+    ctx.beginPath(); 
+    ctx.arc(x, y, 10, 0, Math.PI * 2, true);
+    ctx.fillStyle = "#003d99";
+    ctx.fill();
+    ctx.closePath();
 
-let refresh = function() {
+    ctx.fillStyle ="#FF0000"
+    ctx.fillRect(canvas.width/2, canvas.height/2, 25, 25);
 
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  
-  let x = Math.floor(Math.random()*canvas.width - 10);
-  let y = Math.floor(Math.random()*canvas.height - 10);
-  
-  ctx.beginPath(); 
-  ctx.arc(x, y, 10, 0, Math.PI * 2, true);
-  ctx.fillStyle = "#003d99";
-  ctx.fill();
-  ctx.closePath();
-
-  ctx.fillStyle ="#FF0000"
-  ctx.fillRect(canvas.width/2, canvas.height/2, 25, 25);
-
-  ctx.strokeStyle = "#000";
-  ctx.lineWidth = 5;
-  ctx.strokeRect(canvas.width/2, canvas.height/2, 25, 25);
-
-  refresh();
-  button.addEventListener("click", refresh, false);
-
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 5;
+    ctx.strokeRect(canvas.width/2, canvas.height/2, 25, 25);
+  }
 }
-
-
-
-
-
-
