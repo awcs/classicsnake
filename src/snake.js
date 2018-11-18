@@ -65,8 +65,33 @@ function launchGame(){
     } else if(snakeOrientation === 3){
       snakeBlock.x += 25;
     }
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
   }, 60);
+
+
+const button = document.getElementById("refresh");
+
+let refresh = function() {
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  
+  let x = Math.floor(Math.random()*canvas.width - 10);
+  let y = Math.floor(Math.random()*canvas.height - 10);
+  
+  ctx.beginPath(); 
+  ctx.arc(x, y, 10, 0, Math.PI * 2, true);
+  ctx.fillStyle = "#003d99";
+  ctx.fill();
+  ctx.closePath();
+
+  ctx.fillStyle ="#FF0000"
+  ctx.fillRect(canvas.width/2, canvas.height/2, 25, 25);
+
+  ctx.strokeStyle = "#000";
+  ctx.lineWidth = 5;
+  ctx.strokeRect(canvas.width/2, canvas.height/2, 25, 25);
+
+  refresh();
+  button.addEventListener("click", refresh, false);
 
 }
 
