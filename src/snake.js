@@ -3,91 +3,107 @@ let startGameHandler = document.getElementById('start-game');
 
 startGameHandler.addEventListener('click', function(){
   document.getElementById('startscreen').className="d-none";
-})
+});
 
 
 // START GAME 
 function launchGame(){
 
-  let snakeBlock ;
-  let snakeOrientation = 0 ; 
-
-    // MOVES EVENTS
-  document.onkeydown = checkKey;
-
-  function checkKey(e) {
-    e = e || window.event;
-    if (e.keyCode == '38') {
-      snakeOrientation = 0
-    } else if (e.keyCode == '40') {
-      snakeOrientation = 1
-    } else if (e.keyCode == '37') {
-      snakeOrientation = 2
-    } else if (e.keyCode == '39') {
-      snakeOrientation = 3
-    }
-  }
-
-  // SNAKE CLASS 
-  class snakeBlockAnimation {
-
-    constructor(width,height,color,x,y){
-      this.width = width;
-      this.height = height;
-      this.x = x;
-      this.y = y; 
-      this.numberBlockSnake = [0, 1, 2, 3, 4];
-      this.update = function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for( let i = 0; i< this.numberBlockSnake.length; i++){
-          ctx.fillStyle = color;
-          ctx.fillRect(this.x, this.y+i*25, this.width, this.height);
-        }
-      }
-    }
-  }
-
-  // CREATE CANVAS + SNAKE
+  // CREATE CANVAS
   document.getElementById('canvas').className = "d-block";
   const canvas = document.querySelector('canvas');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   const ctx = canvas.getContext('2d');
   document.body.insertBefore(canvas, document.body.childNodes[0]);
-  snakeBlock = new snakeBlockAnimation(25,25,"red",canvas.width/2, canvas.height/2);
-  
-  // MOVEMENTS UPDATE + REFRESH CANVAS
+
+  let snakeOrientation = 0; 
+  let shifter = {};
+
+  // SNAKE SETTINGS
+  let snake = { 
+    height: 25,
+    width: 25,
+    backgroundColor : "red"
+  };
+
+  let snakeCoordinates = [
+    { x : canvas.width/2, y : canvas.height/2 },
+    { x : canvas.width/2, y : canvas.height/2 + snake.width },
+    { x : canvas.width/2, y : canvas.height/2 + snake.width*2 },
+  ];
+
+  // DRAW SNAKE
+  function drawSnake() {
+    for(let i = 0; i < snakeCoordinates.length; i++){
+      ctx.fillStyle = snake.backgroundColor;
+      ctx.fillRect(snakeCoordinates[i].x, snakeCoordinates[i].y, snake.width, snake.height);
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 5;
+      ctx.strokeRect(snakeCoordinates[i].x, snakeCoordinates[i].y, snake.width, snake.height);
+    };
+  };
+
+  // CLEAR CANVAS
+  function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
+  // MOVES EVENTS
+  document.onkeydown = checkKey;
+
+  function checkKey(e) {
+    e = e || window.event;
+    if (e.keyCode == '38') {
+      snakeOrientation = 0;
+    } else if (e.keyCode == '40') {
+      snakeOrientation = 1;
+    } else if (e.keyCode == '37') {
+      snakeOrientation = 2;
+    } else if (e.keyCode == '39') {
+      snakeOrientation = 3;
+    };
+  };
+
+  // MOVEMENTS UPDATE + REFRESH CANVAS/SNAKE/FOOD
   setInterval( () => {
-    snakeBlock.update();
+    update();
+    drawSnake();
+    generateFood();
     if(snakeOrientation === 0){
-      snakeBlock.y -= 25; 
+      shifter = snakeCoordinates.pop();
+      shifter.y = snakeCoordinates[0].y - snake.height;
+      shifter.x = snakeCoordinates[0].x;
+      return snakeCoordinates.unshift(shifter);
     } else if(snakeOrientation === 1){
-      snakeBlock.y += 25; 
+      shifter = snakeCoordinates.pop();
+      shifter.y = snakeCoordinates[0].y + snake.height;
+      shifter.x = snakeCoordinates[0].x;
+      return snakeCoordinates.unshift(shifter);
     } else if(snakeOrientation === 2){
-      snakeBlock.x -= 25;
+      shifter = snakeCoordinates.pop();
+      shifter.x = snakeCoordinates[0].x - snake.width;
+      shifter.y = snakeCoordinates[0].y;
+      return snakeCoordinates.unshift(shifter);
     } else if(snakeOrientation === 3){
-      snakeBlock.x += 25;
+      shifter = snakeCoordinates.pop();
+      shifter.x = snakeCoordinates[0].x + snake.width;
+      shifter.y = snakeCoordinates[0].y;
+      return snakeCoordinates.unshift(shifter);
     }
-  }, 60);
+  }, 120);
 
   //GENERATE FOOD
-  function generateFood() {
+  let foodCoordinates = { 
+    x : Math.floor(Math.random()*canvas.width - 10),
+    y : Math.floor(Math.random()*canvas.height - 10)
+  };
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    let x = Math.floor(Math.random()*canvas.width - 10);
-    let y = Math.floor(Math.random()*canvas.height - 10);
-    
+  function generateFood() {
     ctx.beginPath(); 
-    ctx.arc(x, y, 10, 0, Math.PI * 2, true);
+    ctx.arc(foodCoordinates.x, foodCoordinates.y, 10, 0, Math.PI * 2, true);
     ctx.fillStyle = "#003d99";
     ctx.fill();
     ctx.closePath();
-
-    ctx.fillStyle ="#FF0000"
-    ctx.fillRect(canvas.width/2, canvas.height/2, 25, 25);
-
-    ctx.strokeStyle = "#000";
-    ctx.lineWidth = 5;
-    ctx.strokeRect(canvas.width/2, canvas.height/2, 25, 25);
-  }
-}
+  };
+};
