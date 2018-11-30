@@ -19,6 +19,7 @@ function launchGame(){
 
   let snakeOrientation = 0; 
   let shifter = {};
+  let interval;
 
   // SNAKE SETTINGS
   let snake = { 
@@ -28,10 +29,16 @@ function launchGame(){
   };
 
   let snakeCoordinates = [
-    { x : canvas.width/2, y : canvas.height/2 },
-    { x : canvas.width/2, y : canvas.height/2 + snake.width },
-    { x : canvas.width/2, y : canvas.height/2 + snake.width*2 },
+    { x : Math.floor(canvas.width/2), y : Math.floor(canvas.height/2) },
+    { x : Math.floor(canvas.width/2), y : Math.floor(canvas.height/2) + snake.width },
+    { x : Math.floor(canvas.width/2), y : Math.floor(canvas.height/2) + snake.width*2 },
   ];
+
+  //GENERATE FOOD
+  let foodCoordinates = { 
+    x : Math.floor(Math.random()*canvas.width - 12),
+    y : Math.floor(Math.random()*canvas.height - 12)
+  };
 
   // DRAW SNAKE
   function drawSnake() {
@@ -65,8 +72,12 @@ function launchGame(){
     };
   };
 
+  function initializeInterval(){
+    interval = setInterval(launchInterval, 120);
+  };
+
   // MOVEMENTS UPDATE + REFRESH CANVAS/SNAKE/FOOD
-  setInterval( () => {
+  function launchInterval(){
     update();
     drawSnake();
     generateFood();
@@ -74,36 +85,90 @@ function launchGame(){
       shifter = snakeCoordinates.pop();
       shifter.y = snakeCoordinates[0].y - snake.height;
       shifter.x = snakeCoordinates[0].x;
-      return snakeCoordinates.unshift(shifter);
+      if(shifter.y < 0){
+        endGame();
+      } else {
+        if(
+          shifter.y <= foodCoordinates.y + 12 && 
+          shifter.y >= foodCoordinates.y - 12 &&
+          shifter.x <= foodCoordinates.x + 12 &&
+          shifter.x >= foodCoordinates.x - 12
+          ){
+          foodCollision();
+          generateFood();
+          
+        }
+        return snakeCoordinates.unshift(shifter);
+      }
     } else if(snakeOrientation === 1){
       shifter = snakeCoordinates.pop();
       shifter.y = snakeCoordinates[0].y + snake.height;
       shifter.x = snakeCoordinates[0].x;
+      if(shifter.y > canvas.height){
+        endGame();
+      } else if(
+        shifter.y <= foodCoordinates.y + 12 && 
+        shifter.y >= foodCoordinates.y - 12 &&
+        shifter.x <= foodCoordinates.x + 12 &&
+        shifter.x >= foodCoordinates.x - 12
+        ){
+        foodCollision();
+        generateFood();
+      } 
       return snakeCoordinates.unshift(shifter);
     } else if(snakeOrientation === 2){
       shifter = snakeCoordinates.pop();
       shifter.x = snakeCoordinates[0].x - snake.width;
       shifter.y = snakeCoordinates[0].y;
+      if(shifter.x < 0){
+        endGame();
+      } else if(
+        shifter.y <= foodCoordinates.y + 12 && 
+        shifter.y >= foodCoordinates.y - 12 &&
+        shifter.x <= foodCoordinates.x + 12 &&
+        shifter.x >= foodCoordinates.x - 12
+        ){
+        foodCollision();
+        generateFood();
+      }
       return snakeCoordinates.unshift(shifter);
     } else if(snakeOrientation === 3){
       shifter = snakeCoordinates.pop();
       shifter.x = snakeCoordinates[0].x + snake.width;
       shifter.y = snakeCoordinates[0].y;
+      if(shifter.x > canvas.width){
+        endGame();
+      } else if(
+        shifter.y <= foodCoordinates.y + 12 && 
+        shifter.y >= foodCoordinates.y - 12 &&
+        shifter.x <= foodCoordinates.x + 12 &&
+        shifter.x >= foodCoordinates.x - 12
+        ){
+        foodCollision();
+        generateFood();
+      }
       return snakeCoordinates.unshift(shifter);
     }
-  }, 120);
-
-  //GENERATE FOOD
-  let foodCoordinates = { 
-    x : Math.floor(Math.random()*canvas.width - 10),
-    y : Math.floor(Math.random()*canvas.height - 10)
   };
 
+  initializeInterval();
+
+  function foodCollision(){
+    foodCoordinates.y = Math.floor(Math.random()*canvas.height - 12)
+    foodCoordinates.x = Math.floor(Math.random()*canvas.width - 12)
+  }
+
   function generateFood() {
+    ctx.fillStyle = snake.backgroundColor;
+    ctx.fillRect( foodCoordinates.x - 12, foodCoordinates.y -12, 24, 24);
     ctx.beginPath(); 
-    ctx.arc(foodCoordinates.x, foodCoordinates.y, 10, 0, Math.PI * 2, true);
+    ctx.arc(foodCoordinates.x, foodCoordinates.y, 12, 0, Math.PI * 2, true);
     ctx.fillStyle = "#003d99";
     ctx.fill();
     ctx.closePath();
   };
+
+  function endGame(){
+    clearInterval(interval);
+  }
 };
