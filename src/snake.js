@@ -58,12 +58,14 @@ function launchGame(){
   };
 
   function border() {
+    ctx.fillStyle = '#663300';
+    ctx.save();
+    ctx.fillRect(0, 0, 20, canvas.height);
+    ctx.fillRect(0, 0, canvas.width, 20);
+    ctx.fillRect(canvas.width, 0, -20, canvas.height);
+    ctx.fillRect(0, canvas.height, canvas.width, -20);
     ctx.fillStyle = '#000';
     ctx.save();
-    ctx.fillRect(0, 0, 20, height.window);
-    ctx.fillRect(500, 169, 900, 20);
-    ctx.fillRect(500, 701, 900, 20);
-    ctx.fillRect(1400, 169, 20, 552);
   }
 
 
@@ -95,13 +97,14 @@ function launchGame(){
   // MOVEMENTS UPDATE + REFRESH CANVAS/SNAKE/FOOD
   function launchInterval(){
     update();
+    border();
     drawSnake();
     generateFood();
     if(snakeOrientation === 0){
       shifter = snakeCoordinates.pop();
       shifter.y = snakeCoordinates[0].y - snake.height;
       shifter.x = snakeCoordinates[0].x;
-      if(shifter.y < 0){
+      if(shifter.y < 19){
         endGame();
       } else {
         if(
@@ -120,7 +123,7 @@ function launchGame(){
       shifter = snakeCoordinates.pop();
       shifter.y = snakeCoordinates[0].y + snake.height;
       shifter.x = snakeCoordinates[0].x;
-      if(shifter.y > canvas.height){
+      if(shifter.y > canvas.height - 40){
         endGame();
       } else if(
         shifter.y <= collisionCoordinates.y + 28 && 
@@ -136,7 +139,7 @@ function launchGame(){
       shifter = snakeCoordinates.pop();
       shifter.x = snakeCoordinates[0].x - snake.width;
       shifter.y = snakeCoordinates[0].y;
-      if(shifter.x < 0){
+      if(shifter.x < 15){
         endGame();
       } else if(
         shifter.y <= collisionCoordinates.y + 28 && 
@@ -152,7 +155,7 @@ function launchGame(){
       shifter = snakeCoordinates.pop();
       shifter.x = snakeCoordinates[0].x + snake.width;
       shifter.y = snakeCoordinates[0].y;
-      if(shifter.x > canvas.width){
+      if(shifter.x > canvas.width - 20){
         endGame();
       } else if(
         shifter.y <= collisionCoordinates.y + 28 && 
