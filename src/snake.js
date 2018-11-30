@@ -86,6 +86,7 @@ function launchGame(){
     update();
     drawSnake();
     generateFood();
+    console.log(snakeCoordinates)
     if(snakeOrientation === 0){
       shifter = snakeCoordinates.pop();
       shifter.y = snakeCoordinates[0].y - snake.height;
@@ -101,7 +102,7 @@ function launchGame(){
           ){
           foodCollision();
           generateFood();
-          
+          generateNewBlock();
         }
         return snakeCoordinates.unshift(shifter);
       }
@@ -119,6 +120,7 @@ function launchGame(){
         ){
         foodCollision();
         generateFood();
+        generateNewBlock();
       } 
       return snakeCoordinates.unshift(shifter);
     } else if(snakeOrientation === 2){
@@ -135,6 +137,7 @@ function launchGame(){
         ){
         foodCollision();
         generateFood();
+        generateNewBlock();
       }
       return snakeCoordinates.unshift(shifter);
     } else if(snakeOrientation === 3){
@@ -151,6 +154,7 @@ function launchGame(){
         ){
         foodCollision();
         generateFood();
+        generateNewBlock();
       }
       return snakeCoordinates.unshift(shifter);
     }
@@ -161,8 +165,24 @@ function launchGame(){
   function foodCollision(){
     foodCoordinates.y = Math.floor(Math.random()*canvas.height - 12);
     foodCoordinates.x = Math.floor(Math.random()*canvas.width - 12);
-    collisionCoordinates.x = foodCoordinates.x - 12;
-    collisionCoordinates.y =  foodCoordinates.y - 12;
+    collisionCoordinates.x = foodCoordinates.x - 14;
+    collisionCoordinates.y =  foodCoordinates.y - 14;
+  };
+
+  function generateNewBlock(){
+    if(snakeOrientation === 0){
+      let newBlock = { x : snakeCoordinates[snakeCoordinates.length - 1].x,y : snakeCoordinates[snakeCoordinates.length - 1].y + 25 };
+      snakeCoordinates.push(newBlock);
+    } else if( snakeOrientation === 1){
+      let newBlock = { x : snakeCoordinates[snakeCoordinates.length - 1].x,y : snakeCoordinates[snakeCoordinates.length - 1].y - 25 };
+      snakeCoordinates.push(newBlock);
+    } else if( snakeOrientation === 2){
+      let newBlock = { x : snakeCoordinates[snakeCoordinates.length - 1].x + 25 ,y : snakeCoordinates[snakeCoordinates.length - 1].y };
+      snakeCoordinates.push(newBlock);
+    } else if( snakeOrientation === 3){
+      let newBlock = { x : snakeCoordinates[snakeCoordinates.length - 1].x - 25,y : snakeCoordinates[snakeCoordinates.length - 1].y };
+      snakeCoordinates.push(newBlock);
+    };
   };
 
   function generateFood(){
