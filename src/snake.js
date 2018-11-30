@@ -57,6 +57,8 @@ function launchGame(){
     };
   };
 
+
+  //Generate Border
   function border() {
     ctx.fillStyle = '#663300';
     ctx.save();
