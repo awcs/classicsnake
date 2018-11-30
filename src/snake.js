@@ -17,6 +17,7 @@ function launchGame(){
   const ctx = canvas.getContext('2d');
   document.body.insertBefore(canvas, document.body.childNodes[0]);
 
+
   let snakeOrientation = 0; 
   let shifter = {};
 
@@ -43,6 +44,16 @@ function launchGame(){
       ctx.strokeRect(snakeCoordinates[i].x, snakeCoordinates[i].y, snake.width, snake.height);
     };
   };
+
+  function border() {
+    ctx.fillStyle = '#000';
+    ctx.save();
+    ctx.fillRect(0, 0, 20, height.window);
+    ctx.fillRect(500, 169, 900, 20);
+    ctx.fillRect(500, 701, 900, 20);
+    ctx.fillRect(1400, 169, 20, 552);
+  }
+
 
   // CLEAR CANVAS
   function update() {
