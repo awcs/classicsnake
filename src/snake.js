@@ -91,18 +91,19 @@ function launchGame(){
   //GenereteBrickLineRight
   function brickLineRight() {
     let line = 6;
-    let row = 12;
+    let rowOne = 6;
+    let rowTwo = 12;
     for(let i = 1; i <= canvas.height; i++) {
       ctx.fillStyle = '#000';
       ctx.save();
       ctx.fillRect(0, (0 + line)*i, 20, 2);
     }
-    for(let i = 2; i <= canvas.height; i++) {
-      ctx.fillRect(canvas.width - 5, (6 + line)*i, 2, 6);
-      ctx.fillRect(canvas.width - 12, (6 + line)*i, 2, 6);
+    for(let i = 2; i <= canvas.height -300; i++) {
+      ctx.fillRect(canvas.width - 5, (6 + rowOne)*i, 2, 6);
+      ctx.fillRect(canvas.width - 12, (6 + rowOne)*i, 2, 6);
       }
-    for( let i = 0; i <= canvas.height; i++) {
-      ctx.fillRect(canvas.width - 8, 20 + (row*i), 2, 6);
+    for( let i = 0; i <= canvas.height-300; i++) {
+      ctx.fillRect(canvas.width - 8, 20 + (rowTwo*i), 2, 6);
     }
     ctx.fillRect(canvas.width - 20, 20, 2, canvas.height - 40)
   }
