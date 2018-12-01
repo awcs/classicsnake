@@ -60,16 +60,95 @@ function launchGame(){
 
   //Generate Border
   function border() {
-    ctx.fillStyle = '#663300';
+    ctx.fillStyle = '#ccccb3';
     ctx.save();
     ctx.fillRect(0, 0, 20, canvas.height);
     ctx.fillRect(0, 0, canvas.width, 20);
     ctx.fillRect(canvas.width, 0, -20, canvas.height);
     ctx.fillRect(0, canvas.height, canvas.width, -20);
-    ctx.fillStyle = '#000';
-    ctx.save();
   }
 
+  //GenerateBrickLineTop
+  function brickLieTop() {
+    ctx.fillStyle = '#000';
+    ctx.save();
+    ctx.fillRect(0, 0, canvas.width, 2);
+    ctx.fillRect(0, 6, canvas.width, 2);
+    ctx.fillRect(0, 12, canvas.width, 2);
+    ctx.fillRect(0, 18, canvas.width, 2);
+  }
+
+  //GenerateBrickLineBottom
+  function brickLineBottom() {
+    ctx.fillStyle = '#000';
+    ctx.save();
+    ctx.fillRect(0, canvas.height - 2, canvas.width, 2);
+    ctx.fillRect(0, canvas.height - 8, canvas.width, 2);
+    ctx.fillRect(0, canvas.height - 14, canvas.width, 2);
+    ctx.fillRect(0, canvas.height - 20, canvas.width, 2);
+  }
+
+  //GenereteBrickLineRight
+  function brickLineRight() {
+    let line = 6;
+    let row = 12;
+    for(let i = 1; i <= canvas.height; i++) {
+      ctx.fillStyle = '#000';
+      ctx.save();
+      ctx.fillRect(0, (0 + line)*i, 20, 2);
+    }
+    for(let i = 2; i <= canvas.height; i++) {
+      ctx.fillRect(canvas.width - 5, (6 + line)*i, 2, 6);
+      ctx.fillRect(canvas.width - 12, (6 + line)*i, 2, 6);
+      }
+    for( let i = 0; i <= canvas.height; i++) {
+      ctx.fillRect(canvas.width - 8, 20 + (row*i), 2, 6);
+    }
+    ctx.fillRect(canvas.width - 20, 20, 2, canvas.height - 40)
+  }
+
+    //GenereteBrickLineLeft
+    function brickLineLeft() {
+      let line = 6;
+      let row = 12;
+      for(let i = 1; i <= canvas.height; i++) {
+        ctx.fillStyle = '#000';
+        ctx.save();
+        ctx.fillRect(canvas.width - 20, (0 + line)*i, 20, 2);
+      }
+      for(let i = 2; i <= canvas.height; i++) {
+        ctx.fillRect(5, (6 + line)*i, 2, 6);
+        ctx.fillRect(12, (6 + line)*i, 2, 6);
+        }
+      for( let i = 0; i <= canvas.height; i++) {
+        ctx.fillRect(8, 20 + (row*i), 2, 6);
+      }
+      ctx.fillRect(20, 20, 2, canvas.height - 40);
+    }
+
+  //GenerateBrickTop
+  function generateBrickTop() {
+    let row = 12;
+    for(let i = 1; i <= canvas.width; i++) {
+        ctx.fillStyle = '#000';
+        ctx.save();
+        ctx.fillRect((6 + row)*i, 0, 2, 6);
+        ctx.fillRect((0 + row)*i, 6, 2, 6);
+        ctx.fillRect((6 + row)*i, 12, 2, 6)
+    }
+  }
+
+    //GenerateBrickBottom
+    function generateBrickBottom() {
+      let row = 12;
+      for(let i = 1; i <= canvas.width; i++) {
+          ctx.fillStyle = '#000';
+          ctx.save();
+          ctx.fillRect((6 + row)*i, canvas.height - 8, 2, 6);
+          ctx.fillRect((0 + row)*i, canvas.height - 14, 2, 6);
+          ctx.fillRect((6 + row)*i, canvas.height - 20, 2, 6)
+      }
+    }
 
   // CLEAR CANVAS
   function update() {
@@ -100,6 +179,12 @@ function launchGame(){
   function launchInterval(){
     update();
     border();
+    brickLieTop();
+    brickLineBottom();
+    brickLineRight();
+    brickLineLeft();
+    generateBrickTop();
+    generateBrickBottom();
     drawSnake();
     generateFood();
     if(snakeOrientation === 0){
