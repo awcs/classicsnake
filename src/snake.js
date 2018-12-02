@@ -86,7 +86,6 @@ function launchGame(){
     update();
     drawSnake();
     generateFood();
-    console.log(snakeCoordinates)
     if(snakeOrientation === 0){
       shifter = snakeCoordinates.pop();
       shifter.y = snakeCoordinates[0].y - snake.height;
