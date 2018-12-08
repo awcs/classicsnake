@@ -234,7 +234,7 @@ function launchGame(){
       shifter.y = snakeCoordinates[0].y + snake.height;
       shifter.x = snakeCoordinates[0].x;
       selfCollide(shifter);
-      if(shifter.y >= canvas.height - 40){
+      if(shifter.y >= canvas.height - 20){
         endGame();
       } else {
         collidRules();
@@ -245,7 +245,7 @@ function launchGame(){
       shifter.x = snakeCoordinates[0].x - snake.width;
       shifter.y = snakeCoordinates[0].y;
       selfCollide(shifter);
-      if(shifter.x <= 15){
+      if(shifter.x <= 20){
         endGame();
       } else {
         collidRules();
@@ -352,8 +352,9 @@ function launchGame(){
         food.x >= blueFoodCoordinates.x - 25 &&
         food.y <= blueFoodCoordinates.y + 25 &&
         food.y >= blueFoodCoordinates.y - 25 ||
-        food.x < 32.5 || food.y < 32.5
+        food.x <= 32.5 || food.y <= 32.5
         ){
+        foodCollision(color);
         generateFood(food, color);
       }
     } else if(color === "blue"){
@@ -362,8 +363,9 @@ function launchGame(){
         food.x >= redFoodCoordinates.x - 25 &&
         food.y <= redFoodCoordinates.y + 25 &&
         food.y >= redFoodCoordinates.y - 25 ||
-        food.x < 32.5 || food.y < 32.5
+        food.x <= 32.5 || food.y <= 32.5
         ){
+        foodCollision(color);
         generateFood(food, color);
       }
     }
